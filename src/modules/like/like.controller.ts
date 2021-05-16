@@ -23,8 +23,8 @@ export class LikeController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard())
   @Post()
-  @ApiResponse({ status: 200, description: 'Successful Response' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 200, description: '좋아요 등록/취소 성공' })
+  @ApiResponse({ status: 401, description: '권한이 없습니다.' })
   async commentLike(@Request() request,@Body() payLoad:LikePayload): Promise<any> {
     return await this.likeService.commentLikeOrHate(request.user.id,payLoad,Type.LIKE);
   }
@@ -32,8 +32,8 @@ export class LikeController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard())
   @Post('hate')
-  @ApiResponse({ status: 200, description: 'Successful Response' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 200, description: '싫어요 등록/취소 성공' })
+  @ApiResponse({ status: 401, description: '권한이 없습니다.' })
   async commentHate(@Request() request,@Body() payLoad:LikePayload): Promise<any> {
     return await this.likeService.commentLikeOrHate(request.user.id,payLoad,Type.HATE);
   }
