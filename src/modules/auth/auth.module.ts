@@ -1,3 +1,6 @@
+import { LikeModule } from './../like/like.module';
+import { LikeController } from './../like/like.controller';
+import { CommentController } from './../comment/comment.controller';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -6,10 +9,13 @@ import { UserModule } from './../user';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
+import { CommentModule } from 'modules/comment';
 
 @Module({
   imports: [
     UserModule,
+    CommentModule,
+    LikeModule,
     ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
@@ -29,7 +35,7 @@ import { AuthController } from './auth.controller';
       inject: [ConfigService],
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController,CommentController,LikeController],
   providers: [AuthService, JwtStrategy],
   exports: [PassportModule.register({ defaultStrategy: 'jwt' })],
 })

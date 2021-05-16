@@ -10,10 +10,7 @@ export class User {
   id: number;
 
   @Column({ length: 255 })
-  firstName: string;
-
-  @Column({ length: 255 })
-  lastName: string;
+  nickName: string;
 
   @Column({ length: 255 })
   email: string;
@@ -29,7 +26,6 @@ export class User {
 
 export class UserFillableFields {
   email: string;
-  firstName: string;
-  lastName: string;
+  nickName: string;
   password: string;
 }

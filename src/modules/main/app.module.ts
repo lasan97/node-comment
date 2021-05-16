@@ -1,3 +1,7 @@
+import { CommentService } from './../comment/comment.service';
+import { LikeService } from './../like/like.service';
+import { CommentModule } from './../comment/comment.module';
+import { LikeModule } from './../like/like.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -20,11 +24,14 @@ import { AuthModule } from './../auth';
           database: configService.get('DB_DATABASE'),
           entities: [__dirname + './../**/**.entity{.ts,.js}'],
           synchronize: configService.isEnv('dev'),
+          logging: true,
         } as TypeOrmModuleAsyncOptions;
       },
     }),
     ConfigModule,
     AuthModule,
+    LikeModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

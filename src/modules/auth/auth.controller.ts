@@ -20,9 +20,9 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  @ApiResponse({ status: 201, description: 'Successful Login' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 201, description: '로그인 성공' })
+  @ApiResponse({ status: 400, description: '로그인 실패' })
+  @ApiResponse({ status: 401, description: '권한이 없습니다.' })
   async login(@Body() payload: LoginPayload): Promise<any> {
     const user = await this.authService.validateUser(payload);
     return await this.authService.createToken(user);
