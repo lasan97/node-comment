@@ -15,8 +15,6 @@ export class LikeService {
 
   async commentLikeOrHate(userId:number,payload:LikePayload,type:Type){
     const check = await this.likeRepository.findOne({where:{userId:userId,commentIdx:payload.commentId,type:type}});
-    console.log(type);
-    console.log(check);
     if(check){
       await this.likeRepository.delete({userId:userId,commentIdx:payload.commentId});
       return "Cancel";

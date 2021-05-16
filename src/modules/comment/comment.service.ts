@@ -1,3 +1,4 @@
+import { ForbiddenWord } from './../forbiddenWord/forbidden.word.entity';
 import { Like } from './../like/like.entity';
 import { CommentUpdatePayload } from './payload/comment.update.payload';
 import { CommentPayload } from './payload/comment.payload';
@@ -16,26 +17,33 @@ export class CommentService {
   ) {}
 
   async getList(){
-    // return await this.commentRepository.find();
-    let test = await this.commentRepository
+    return await this.commentRepository
       .createQueryBuilder('comment')
       .select('comment.id','id')
       .addSelect('comment.contents','contents')
       .addSelect('comment.createDate','createDate')
       .addSelect('(select count(`like`.`id`) from `like` as `like` where `like`.`commentIdx` = comment.id and `like`.`type`="LIKE")', 'like')
       .addSelect('(select count(`like`.`id`) from `like` as `like` where `like`.`commentIdx` = comment.id and `like`.`type`="HATE")', 'hate')
-      // .addSelect('cast(IFNULL(COUNT(like.id),0) as unsigned)','like')
-      // .addSelect('cast(IFNULL(COUNT(hate.id),0) as unsigned)','hate')
-      // .leftJoin(Like,"like","comment.id = like.commentIdx")
-      // .leftJoin(Like,"hate","comment.id = hate.commentIdx")
       .getRawMany();
-
-    return test;
-      // .innerJoin(Submission, "sub", "asses.submission_id = sub.id")
-    
   }
 
-  async register(id:number,payload:CommentPayload){
+  async register(id:number,payload:CommentPayload,list:ForbiddenWord[]){
+    const timeCheck = await this.commentRepository
+      .createQueryBuilder('comment')
+      .where('	(CREATE_DATE>=DATE_ADD(NOW(), INTERVAL 10 SECOND))')
+      .getCount();
+    if(timeCheck>0){
+      return "도배 감지";
+    }
+    let forbiddenCheck:boolean = false;
+    list.forEach(word=>{
+      if(payload.content.indexOf(word.contents)>0)
+        forbiddenCheck=true;
+    });
+    if(forbiddenCheck){
+      return "금지어 감지";
+    }
+
     let entity= new Comment;
     entity.contents=payload.content;
     entity.createUser=id;

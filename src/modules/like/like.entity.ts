@@ -30,7 +30,7 @@ export class Like {
 }
 
 export class LikeFillableFields {
-  id: string;
+  id: number;
   userId: number;
   type:Type;
   commentIdx: number;

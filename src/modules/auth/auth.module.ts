@@ -1,3 +1,5 @@
+import { ForbiddenWordController } from './../forbiddenWord/forbidden.word.controller';
+import { ForbiddenWordModule } from './../forbiddenWord/forbidden.word.module';
 import { LikeModule } from './../like/like.module';
 import { LikeController } from './../like/like.controller';
 import { CommentController } from './../comment/comment.controller';
@@ -16,6 +18,7 @@ import { CommentModule } from 'modules/comment';
     UserModule,
     CommentModule,
     LikeModule,
+    ForbiddenWordModule,
     ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
@@ -35,7 +38,7 @@ import { CommentModule } from 'modules/comment';
       inject: [ConfigService],
     }),
   ],
-  controllers: [AuthController,CommentController,LikeController],
+  controllers: [AuthController,CommentController,LikeController,ForbiddenWordController],
   providers: [AuthService, JwtStrategy],
   exports: [PassportModule.register({ defaultStrategy: 'jwt' })],
 })

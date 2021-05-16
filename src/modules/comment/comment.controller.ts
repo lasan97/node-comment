@@ -1,3 +1,4 @@
+import { ForbiddenWordService } from './../forbiddenWord/forbidden.word.service';
 import { CommentUpdatePayload } from './payload/comment.update.payload';
 import { CommentPayload } from './payload/comment.payload';
 import { RegisterPayload } from './../auth/register.payload';
@@ -19,6 +20,7 @@ import { CommentDeletePayload } from './payload/comment.delete.payload';
 export class CommentController {
   constructor(
     private readonly commentService: CommentService,
+    private readonly forbiddenWordService: ForbiddenWordService,
   ) {}
 
   @ApiBearerAuth()
@@ -36,8 +38,8 @@ export class CommentController {
   @ApiResponse({ status: 200, description: '댓글등록 성공' })
   @ApiResponse({ status: 401, description: '권한이 없습니다.' })
   async register(@Request() request,@Body() payload:CommentPayload): Promise<any> {
-    await this.commentService.register(request.user.id,payload);
-    return request.user;
+    const list = await this.forbiddenWordService.getList();
+    return await this.commentService.register(request.user.id,payload,list);
   }
 
   @ApiBearerAuth()
